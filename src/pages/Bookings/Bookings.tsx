@@ -22,6 +22,7 @@ import { Nurse, Parent, Baby } from "../../utils/types";
 import Snackbar from "@mui/material/Snackbar";
 import { Box, Divider } from "@mui/material";
 import { LanguageContext } from "../App";
+import { API_URL } from "../../utils/dbUtils";
 
 export function Bookings(): ReactElement {
   const [date, setDate] = useState<Dayjs | null>(dayjs());
@@ -64,7 +65,7 @@ export function Bookings(): ReactElement {
     if (newCity != null) {
       setLoadingNurses(true);
       fetch(
-        `https://smart-scale-773f6dc98fe5.herokuapp.com/api/receptionist/get-nurses-by-city?city=${newCity
+        `${API_URL}/api/receptionist/get-nurses-by-city?city=${newCity
           ?.toUpperCase()
           .replaceAll(" ", "_")}`,
         {
@@ -88,7 +89,7 @@ export function Bookings(): ReactElement {
   const getParents = (): void => {
     setLoading(true);
     fetch(
-      `https://smart-scale-773f6dc98fe5.herokuapp.com/api/receptionist/get-parents?firstName=${givenName}&lastName=${surname}`,
+      `${API_URL}/api/receptionist/get-parents?firstName=${givenName}&lastName=${surname}`,
       {
         credentials: "include",
       }
@@ -126,24 +127,21 @@ export function Bookings(): ReactElement {
     };
 
     setLoadingBooking(true);
-    fetch("https://smart-scale-773f6dc98fe5.herokuapp.com/csrf", {
+    fetch(`${API_URL}/csrf`, {
       credentials: "include",
     })
       .then((response) => {
         return response.json();
       })
       .then((data) =>
-        fetch(
-          `https://smart-scale-773f6dc98fe5.herokuapp.com/api/checkup?_csrf=${data.token}`,
-          {
-            credentials: "include",
-            method: "POST",
-            body: JSON.stringify(body),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
+        fetch(`${API_URL}/api/checkup?_csrf=${data.token}`, {
+          credentials: "include",
+          method: "POST",
+          body: JSON.stringify(body),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
           .then((response) => {
             setLoadingBooking(false);
             setBookingDialogOpen(false);

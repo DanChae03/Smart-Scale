@@ -6,6 +6,7 @@ import { GoogleIcon } from "../../../components/GoogleIcon";
 import { useLocation, useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import { LanguageContext } from "../../App";
+import { API_URL } from "../../../utils/dbUtils";
 
 export function Landing(): ReactElement {
   const location = useLocation();
@@ -16,14 +17,9 @@ export function Landing(): ReactElement {
 
   useEffect(() => {
     if (location.pathname === "/login/oauth2/google/callback") {
-      fetch(
-        "https://smart-scale-773f6dc98fe5.herokuapp.com/login/oauth2/code/web-google".concat(
-          location.search
-        ),
-        {
-          credentials: "include",
-        }
-      )
+      fetch(`${API_URL}/login/oauth2/code/web-google`.concat(location.search), {
+        credentials: "include",
+      })
         .then((response) => {
           return response.json();
         })
@@ -43,12 +39,9 @@ export function Landing(): ReactElement {
 
   const fetchData = () => {
     setLoading(true);
-    fetch(
-      "https://smart-scale-773f6dc98fe5.herokuapp.com/oauth2/authorization/web-google",
-      {
-        credentials: "include",
-      }
-    )
+    fetch(`${API_URL}/oauth2/authorization/web-google`, {
+      credentials: "include",
+    })
       .then((response) => {
         return response.json();
       })
