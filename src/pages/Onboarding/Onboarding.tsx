@@ -9,7 +9,7 @@ import { ArrowForward } from "@mui/icons-material";
 import Autocomplete from "@mui/material/Autocomplete";
 import cities from "../../utils/Cities";
 import Button from "@mui/material/Button";
-import { fetchUser } from "../../utils/dbUtils";
+import { API_URL, fetchUser } from "../../utils/dbUtils";
 import Box from "@mui/material/Box";
 import { LanguageContext } from "../App";
 
@@ -24,12 +24,9 @@ export function Onboarding(): ReactElement {
 
   useEffect(() => {
     const getUser = (): void => {
-      fetch(
-        "https://smart-scale-773f6dc98fe5.herokuapp.com/api/user/is-registered",
-        {
-          credentials: "include",
-        }
-      )
+      fetch(`${API_URL}/api/user/is-registered`, {
+        credentials: "include",
+      })
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -63,12 +60,9 @@ export function Onboarding(): ReactElement {
 
   const checkUser = (userRoles: string[]) => {
     if (userRoles.includes("NURSE")) {
-      fetch(
-        "https://smart-scale-773f6dc98fe5.herokuapp.com/api/nurse/is-registered",
-        {
-          credentials: "include",
-        }
-      )
+      fetch(`${API_URL}/api/nurse/is-registered`, {
+        credentials: "include",
+      })
         .then((response) => {
           return response.json();
         })
@@ -86,12 +80,9 @@ export function Onboarding(): ReactElement {
     } else if (userRoles.includes("DATA_ANALYST")) {
       navigate("/dashboard");
     } else {
-      fetch(
-        "https://smart-scale-773f6dc98fe5.herokuapp.com/api/parent/is-registered",
-        {
-          credentials: "include",
-        }
-      )
+      fetch(`${API_URL}/api/parent/is-registered`, {
+        credentials: "include",
+      })
         .then((response) => {
           return response.json();
         })
@@ -115,7 +106,7 @@ export function Onboarding(): ReactElement {
 
   const completeRegistration = () => {
     setLoading(true);
-    fetch("https://smart-scale-773f6dc98fe5.herokuapp.com/csrf", {
+    fetch(`${API_URL}/csrf`, {
       credentials: "include",
     })
       .then((response) => {
@@ -123,7 +114,7 @@ export function Onboarding(): ReactElement {
       })
       .then((data) =>
         fetch(
-          `https://smart-scale-773f6dc98fe5.herokuapp.com/api/${
+          `${API_URL}/api/${
             view === "nurse" ? "nurse" : "parent"
           }/complete-registration?_csrf=${data.token}`,
           {

@@ -10,7 +10,7 @@ import Tab from "@mui/material/Tab";
 import Stack from "@mui/material/Stack";
 import { Logo } from "../../components/Logo";
 import { UserIcon } from "../../components/UserIcon";
-import { fetchUser } from "../../utils/dbUtils";
+import { API_URL, fetchUser } from "../../utils/dbUtils";
 import { Bookings } from "../Bookings";
 import { Messages } from "../Messages";
 import { Users } from "../Users";
@@ -35,12 +35,9 @@ export function Dashboard(): ReactElement {
   useEffect(() => {
     const getUser = (): void => {
       setLoading(true);
-      fetch(
-        "https://smart-scale-773f6dc98fe5.herokuapp.com/api/user/is-registered",
-        {
-          credentials: "include",
-        }
-      )
+      fetch(`${API_URL}/api/api/user/is-registered`, {
+        credentials: "include",
+      })
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -68,12 +65,9 @@ export function Dashboard(): ReactElement {
 
   const checkUser = (userRoles: string[]) => {
     if (userRoles.includes("NURSE")) {
-      fetch(
-        "https://smart-scale-773f6dc98fe5.herokuapp.com/api/nurse/is-registered",
-        {
-          credentials: "include",
-        }
-      )
+      fetch(`${API_URL}/api/nurse/is-registered`, {
+        credentials: "include",
+      })
         .then((response) => {
           return response.json();
         })
@@ -88,12 +82,9 @@ export function Dashboard(): ReactElement {
     } else if (userRoles.includes("DATA_ANALYST")) {
     } else {
       {
-        fetch(
-          "https://smart-scale-773f6dc98fe5.herokuapp.com/api/parent/is-registered",
-          {
-            credentials: "include",
-          }
-        )
+        fetch(`${API_URL}/api/parent/is-registered`, {
+          credentials: "include",
+        })
           .then((response) => {
             return response.json();
           })

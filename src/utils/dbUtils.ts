@@ -1,5 +1,7 @@
+export const API_URL = "https://smart-scale-773f6dc98fe5.herokuapp.com";
+
 export function fetchUser(): Promise<any> {
-  return fetch("https://smart-scale-773f6dc98fe5.herokuapp.com/api/user/me", {
+  return fetch(`${API_URL}/api/user/me`, {
     credentials: "include",
   })
     .then((response) => {

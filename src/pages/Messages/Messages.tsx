@@ -23,6 +23,7 @@ import { StyledTextField } from "../../components/StyledTextField";
 import { StyledDialog } from "../../components/StyledDialog";
 import { StyledButton } from "../../components/StyledButton";
 import { LanguageContext } from "../App";
+import { API_URL } from "../../utils/dbUtils";
 
 interface MessageProps {
   user: CurrentUser | null;
@@ -53,7 +54,7 @@ export function Messages({ user }: MessageProps): ReactElement {
 
   const getMessages = (): void => {
     fetch(
-      `https://smart-scale-773f6dc98fe5.herokuapp.com/api/communication${
+      `${API_URL}/api/communication${
         !user?.roles?.includes("ADMIN") && user?.roles?.includes("NURSE")
           ? "/nurse"
           : ""
@@ -88,7 +89,7 @@ export function Messages({ user }: MessageProps): ReactElement {
     } as Message);
     setSelectedQuery({ ...selectedQuery, messages: newMessages });
     setText("");
-    fetch("https://smart-scale-773f6dc98fe5.herokuapp.com/csrf", {
+    fetch(`${API_URL}/csrf`, {
       credentials: "include",
     })
       .then((response) => {
@@ -96,7 +97,7 @@ export function Messages({ user }: MessageProps): ReactElement {
       })
       .then((data) =>
         fetch(
-          `https://smart-scale-773f6dc98fe5.herokuapp.com/api/communication/${selectedQuery?.id}?_csrf=${data.token}`,
+          `${API_URL}/api/communication/${selectedQuery?.id}?_csrf=${data.token}`,
           {
             credentials: "include",
             method: "POST",
@@ -121,7 +122,7 @@ export function Messages({ user }: MessageProps): ReactElement {
 
   const resolveQuery = (): void => {
     setLoading(true);
-    fetch("https://smart-scale-773f6dc98fe5.herokuapp.com/csrf", {
+    fetch(`${API_URL}/csrf`, {
       credentials: "include",
     })
       .then((response) => {
@@ -134,7 +135,7 @@ export function Messages({ user }: MessageProps): ReactElement {
       })
       .then((data) =>
         fetch(
-          `https://smart-scale-773f6dc98fe5.herokuapp.com/api/communication/resolve/${selectedQuery?.id}?_csrf=${data.token}`,
+          `${API_URL}/api/communication/resolve/${selectedQuery?.id}?_csrf=${data.token}`,
           {
             credentials: "include",
             method: "POST",
@@ -156,7 +157,7 @@ export function Messages({ user }: MessageProps): ReactElement {
 
   const createNewQuery = (): void => {
     setNewQueryLoading(true);
-    fetch("https://smart-scale-773f6dc98fe5.herokuapp.com/csrf", {
+    fetch(`${API_URL}/csrf`, {
       credentials: "include",
     })
       .then((response) => {
@@ -168,17 +169,14 @@ export function Messages({ user }: MessageProps): ReactElement {
         return response.json();
       })
       .then((data) =>
-        fetch(
-          `https://smart-scale-773f6dc98fe5.herokuapp.com/api/communication/new?_csrf=${data.token}`,
-          {
-            credentials: "include",
-            method: "POST",
-            body: JSON.stringify({ content: newQuery }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
+        fetch(`${API_URL}/api/communication/new?_csrf=${data.token}`, {
+          credentials: "include",
+          method: "POST",
+          body: JSON.stringify({ content: newQuery }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
           .then((response) => {
             setNewQueryLoading(false);
             setOpen(false);

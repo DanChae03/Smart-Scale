@@ -21,6 +21,7 @@ import { StyledTextField } from "../../components/StyledTextField";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { LanguageContext } from "../App";
+import { API_URL } from "../../utils/dbUtils";
 
 interface ViewBookingsProps {
   user: CurrentUser | null;
@@ -47,9 +48,7 @@ export function ViewBookings({ user }: ViewBookingsProps): ReactElement {
     const getCheckupBookings = () => {
       setLoading(true);
       fetch(
-        `https://smart-scale-773f6dc98fe5.herokuapp.com/api/nurse/schedule?startDate=${date?.format(
-          "YYYY-MM-DD"
-        )}`,
+        `${API_URL}/api/nurse/schedule?startDate=${date?.format("YYYY-MM-DD")}`,
         {
           credentials: "include",
         }
@@ -73,7 +72,7 @@ export function ViewBookings({ user }: ViewBookingsProps): ReactElement {
   useEffect(() => {
     const getCheckupBooking = () => {
       fetch(
-        `https://smart-scale-773f6dc98fe5.herokuapp.com/api/checkup/${parseInt(
+        `${API_URL}/api/checkup/${parseInt(
           selectedAppointment?.checkupBookingId ?? ""
         )}`,
         {
@@ -89,12 +88,9 @@ export function ViewBookings({ user }: ViewBookingsProps): ReactElement {
             setMainWeight(data.mainWeightReading.weight.toString());
           }
           console.log(data);
-          fetch(
-            `https://smart-scale-773f6dc98fe5.herokuapp.com/api/baby/${data.babyId}`,
-            {
-              credentials: "include",
-            }
-          )
+          fetch(`${API_URL}/api/baby/${data.babyId}`, {
+            credentials: "include",
+          })
             .then((response) => {
               return response.json();
             })
@@ -112,7 +108,7 @@ export function ViewBookings({ user }: ViewBookingsProps): ReactElement {
   }, [selectedAppointment]);
 
   const changeMainWeight = (weightReading: WeightReading) => {
-    fetch("https://smart-scale-773f6dc98fe5.herokuapp.com/csrf", {
+    fetch(`${API_URL}/csrf`, {
       credentials: "include",
     })
       .then((response) => {
@@ -120,7 +116,7 @@ export function ViewBookings({ user }: ViewBookingsProps): ReactElement {
       })
       .then((data) =>
         fetch(
-          `https://smart-scale-773f6dc98fe5.herokuapp.com/api/checkup/${selectedAppointment?.checkupBookingId}/setMainWeightReading/${weightReading.id}?_csrf=${data.token}`,
+          `${API_URL}/api/checkup/${selectedAppointment?.checkupBookingId}/setMainWeightReading/${weightReading.id}?_csrf=${data.token}`,
           {
             credentials: "include",
             method: "PUT",
@@ -137,7 +133,7 @@ export function ViewBookings({ user }: ViewBookingsProps): ReactElement {
 
   const addScale = (): void => {
     setScaleLoading(true);
-    fetch("https://smart-scale-773f6dc98fe5.herokuapp.com/csrf", {
+    fetch(`${API_URL}/csrf`, {
       credentials: "include",
     })
       .then((response) => {
@@ -145,7 +141,7 @@ export function ViewBookings({ user }: ViewBookingsProps): ReactElement {
       })
       .then((data) =>
         fetch(
-          `https://smart-scale-773f6dc98fe5.herokuapp.com/api/checkup/${parseInt(
+          `${API_URL}/api/checkup/${parseInt(
             selectedAppointment?.checkupBookingId ?? ""
           )}/addScale?_csrf=${data.token}`,
           {

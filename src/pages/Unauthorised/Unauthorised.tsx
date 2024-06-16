@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { ReactElement, useContext, useEffect, useState } from "react";
 import { Logo } from "../../components/Logo";
 import { useNavigate } from "react-router-dom";
-import { fetchUser } from "../../utils/dbUtils";
+import { API_URL, fetchUser } from "../../utils/dbUtils";
 import CircularProgress from "@mui/material/CircularProgress";
 import { LanguageContext } from "../App";
 
@@ -18,12 +18,9 @@ export function Unauthorised(): ReactElement {
   useEffect(() => {
     const getUser = (): void => {
       setLoading(true);
-      fetch(
-        "https://smart-scale-773f6dc98fe5.herokuapp.com/api/user/is-registered",
-        {
-          credentials: "include",
-        }
-      )
+      fetch(`${API_URL}/api/user/is-registered`, {
+        credentials: "include",
+      })
         .then((response) => {
           if (response.ok) {
             return response.json();

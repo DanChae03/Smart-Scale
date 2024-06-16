@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import { ReactElement, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LanguageContext } from "../../pages/App";
+import { API_URL } from "../../utils/dbUtils";
 
 interface UserIconProps {
   src?: string;
@@ -21,7 +22,7 @@ export function UserIcon({ src }: UserIconProps): ReactElement {
   const { language } = useContext(LanguageContext);
 
   const logout = (): void => {
-    fetch(`https://smart-scale-773f6dc98fe5.herokuapp.com/logout`, {
+    fetch(`${API_URL}/logout`, {
       credentials: "include",
     }).then(() => {
       navigate("/");

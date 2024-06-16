@@ -15,6 +15,7 @@ import { ScatterChart } from "@mui/x-charts/ScatterChart";
 import { ScatterValueType } from "@mui/x-charts";
 import { StyledTextField } from "../../components/StyledTextField";
 import { LanguageContext } from "../App";
+import { API_URL } from "../../utils/dbUtils";
 export function Statistics(): ReactElement {
   const [isAverageWeights, setIsAverageWeights] = useState<boolean>(true);
   const [statistics, setStatistics] = useState<CityStatistics[]>([]);
@@ -31,12 +32,9 @@ export function Statistics(): ReactElement {
 
   useEffect(() => {
     const getStatistics = (): void => {
-      fetch(
-        `https://smart-scale-773f6dc98fe5.herokuapp.com/api/statistics/weights-by-city`,
-        {
-          credentials: "include",
-        }
-      )
+      fetch(`${API_URL}/api/statistics/weights-by-city`, {
+        credentials: "include",
+      })
         .then((response) => {
           return response.json();
         })
@@ -160,15 +158,12 @@ export function Statistics(): ReactElement {
     array.reduce((a, b) => a + b) / array.length;
 
   const getJSONData = (): void => {
-    fetch(
-      `https://smart-scale-773f6dc98fe5.herokuapp.com/api/statistics/baby-data-json`,
-      {
-        credentials: "include",
-        headers: {
-          "Content-Type": "text/json",
-        },
-      }
-    )
+    fetch(`${API_URL}/api/statistics/baby-data-json`, {
+      credentials: "include",
+      headers: {
+        "Content-Type": "text/json",
+      },
+    })
       .then((response) => response.blob())
       .then((blob) => saveAs(blob, "baby-data.json"))
       .catch((error) => {
@@ -177,15 +172,12 @@ export function Statistics(): ReactElement {
   };
 
   const getCSVData = (): void => {
-    fetch(
-      `https://smart-scale-773f6dc98fe5.herokuapp.com/api/statistics/baby-data-csv`,
-      {
-        credentials: "include",
-        headers: {
-          "Content-Type": "text/csv",
-        },
-      }
-    )
+    fetch(`${API_URL}/api/statistics/baby-data-csv`, {
+      credentials: "include",
+      headers: {
+        "Content-Type": "text/csv",
+      },
+    })
       .then((response) => response.blob())
       .then((blob) => saveAs(blob, "baby-data.csv"))
       .catch((error) => {

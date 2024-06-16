@@ -11,6 +11,7 @@ import Link from "@mui/material/Link";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import { LanguageContext } from "../../App";
+import { API_URL } from "../../../utils/dbUtils";
 
 export function Register(): ReactElement {
   const [givenName, setGivenName] = useState<string>("");
@@ -24,12 +25,9 @@ export function Register(): ReactElement {
 
   useEffect(() => {
     const getUser = (): void => {
-      fetch(
-        "https://smart-scale-773f6dc98fe5.herokuapp.com/api/user/is-registered",
-        {
-          credentials: "include",
-        }
-      )
+      fetch(`${API_URL}/api/user/is-registered`, {
+        credentials: "include",
+      })
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -59,24 +57,21 @@ export function Register(): ReactElement {
     };
     setLoading(true);
 
-    fetch("https://smart-scale-773f6dc98fe5.herokuapp.com/csrf", {
+    fetch(`${API_URL}/csrf`, {
       credentials: "include",
     })
       .then((response) => {
         return response.json();
       })
       .then((data) =>
-        fetch(
-          `https://smart-scale-773f6dc98fe5.herokuapp.com/api/user/complete-registration?_csrf=${data.token}`,
-          {
-            credentials: "include",
-            method: "POST",
-            body: JSON.stringify(body),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        ).then(() => navigate("/onboarding"))
+        fetch(`${API_URL}/api/user/complete-registration?_csrf=${data.token}`, {
+          credentials: "include",
+          method: "POST",
+          body: JSON.stringify(body),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then(() => navigate("/onboarding"))
       )
       .catch((error) => {
         setLoading(false);

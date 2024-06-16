@@ -14,6 +14,7 @@ import { User } from "../../utils/types";
 import Snackbar from "@mui/material/Snackbar";
 import { Divider } from "@mui/material";
 import { LanguageContext } from "../App";
+import { API_URL } from "../../utils/dbUtils";
 
 export function Users(): ReactElement {
   const [givenName, setGivenName] = useState<string>("");
@@ -34,7 +35,7 @@ export function Users(): ReactElement {
   const getUsers = (): void => {
     setLoading(true);
     fetch(
-      `https://smart-scale-773f6dc98fe5.herokuapp.com/api/admin/users?firstName=${givenName}&lastName=${surname}`,
+      `${API_URL}/api/admin/users?firstName=${givenName}&lastName=${surname}`,
       {
         credentials: "include",
       }
@@ -55,27 +56,24 @@ export function Users(): ReactElement {
 
   const updateUser = (): void => {
     setuserLoading(true);
-    fetch("https://smart-scale-773f6dc98fe5.herokuapp.com/csrf", {
+    fetch(`${API_URL}/csrf`, {
       credentials: "include",
     })
       .then((response) => {
         return response.json();
       })
       .then((data) =>
-        fetch(
-          `https://smart-scale-773f6dc98fe5.herokuapp.com/api/admin/update-roles?_csrf=${data.token}`,
-          {
-            credentials: "include",
-            method: "POST",
-            body: JSON.stringify({
-              userId: selectedUser?.userId,
-              roles: selectedUser?.roles,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        ).then((response) => {
+        fetch(`${API_URL}/api/admin/update-roles?_csrf=${data.token}`, {
+          credentials: "include",
+          method: "POST",
+          body: JSON.stringify({
+            userId: selectedUser?.userId,
+            roles: selectedUser?.roles,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((response) => {
           if (response.ok && selectedUser != null) {
             handleResult("Successfully updated Roles.", false);
             const newUsers = users.filter(
