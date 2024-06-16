@@ -35,7 +35,7 @@ export function Dashboard(): ReactElement {
   useEffect(() => {
     const getUser = (): void => {
       setLoading(true);
-      fetch(`${API_URL}/api/api/user/is-registered`, {
+      fetch(`${API_URL}/api/user/is-registered`, {
         credentials: "include",
       })
         .then((response) => {
