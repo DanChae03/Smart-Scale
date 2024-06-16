@@ -1,0 +1,1 @@
+export { StyledAccordion } from "./StyledAccordion";
