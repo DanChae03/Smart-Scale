@@ -29,16 +29,16 @@ To run the web application, use the following steps:
 Only Google accounts authorised by an administrator will be able to access the screen. Therefore, you may log in using these two throwaway Google Accounts:
 
 **Nurse Account**
-Email: smartscalenurse@gmail.com
-Password: 2RBZCXwKtgGJne
+Email: ```smartscalenurse@gmail.com```
+Password: ```2RBZCXwKtgGJne```
 
 Nurses can view bookings that have been made by Receptionists, as well as view statistics for Baby Weights. 
 
 The actual weighing functionality was done on the hardware-side of the capstone project.
 
 **Receptionist Account**
-Email: smartscalereceptionist@gmail.com
-Password: e6HrvPuqyEcH4j
+Email: ```smartscalereceptionist@gmail.com```
+Password: ```e6HrvPuqyEcH4j```
 
 Receptionists can create bookings between parents and nurses. 
 
