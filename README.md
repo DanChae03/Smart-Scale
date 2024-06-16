@@ -22,6 +22,7 @@ To run the web application, use the following steps:
 
 4: After some initial loading time, you should be greeted with this screen. 
 **NOTE: The website is designed for 1920 x 1080px screens at 100% scale. Responsive scaling was out of the scope of the project.**
+![Login Screen](/public/images/Login.png)
 
 ## Login
 
